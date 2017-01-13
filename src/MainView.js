@@ -1,5 +1,5 @@
 import React from 'react'
-import Nowy from './Nowy'
+import LoginElement from './LoginElement'
 
 export default class Element extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class Element extends React.Component {
               <center><h1></h1></center>
               <center><h>Please Log in</h></center>
               <center><h1></h1></center>
-              <Nowy/>
+              <LoginElement/>
           </div>
     );
   }
