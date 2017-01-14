@@ -13,7 +13,7 @@ export default class LoginElement extends React.Component {
     this.server = axios.create({baseURL: "http://localhost:8080/"});//Adam tu tak tylko wpisalem zeby cokolwiek było
   }
   sendData(event){
-    this.server.post("api/", {userName: this.state.userName, password: this.state.password});
+    this.server.post("api/", {userName: this.state.userName, password: this.state.password}).then(function (response) {console.log("saved successfully")});;
   }
   userNameChange(event){
     this.setState({userName: event.target.value})//tu se pisze
