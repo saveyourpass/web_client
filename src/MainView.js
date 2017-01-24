@@ -1,7 +1,7 @@
 import React from 'react'
 import LoginElement from './LoginElement'
 
-export default class Element extends React.Component {
+export default class MainView extends React.Component {
   constructor(props) {
     super(props);
   }

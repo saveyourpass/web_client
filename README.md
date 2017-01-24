@@ -6,3 +6,6 @@ open project and then
 in terminal:
 $ npm install
 $ npm run web-app
+
+additional:
+$ npm install react-router --save

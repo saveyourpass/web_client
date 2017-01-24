@@ -3,6 +3,7 @@ module.exports = {
         javascript: './app.js'
     },
     output: {
+        path: './',
         filename: 'bundle.js'
     },
     
@@ -17,5 +18,9 @@ module.exports = {
                 }
             }
         ]
+    },
+
+    devServer: {
+        historyApiFallback: true
     }
 }

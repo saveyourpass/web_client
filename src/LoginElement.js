@@ -1,5 +1,7 @@
 import React from 'react'
 import * as axios from "axios";
+import {Link, browserHistory, push} from 'react-router'
+
 
 export default class LoginElement extends React.Component {
   constructor(props) {
@@ -7,19 +9,47 @@ export default class LoginElement extends React.Component {
     this.state = {
       userName: "j",
       password: "p"
-    }
-    this
+    };
+    this.deleteToken = this.deleteToken.bind(this);
+    this.newFunc = this.newFunc.bind(this);
     this.userNameChange = this.userNameChange.bind(this);//deklaracja
     this.passwordChange = this.passwordChange.bind(this);
-    this.sendData = this.sendData.bind(this);
-    this.server = axios.create({baseURL: "http://localhost:8080/"});//Adam tu tak tylko wpisalem zeby cokolwiek było
+    this.tryToLogIn = this.tryToLogIn.bind(this);
+    this.server = axios.create({baseURL: "http://localhost:8080/"});
   }
-  sendData(event){
-    axios.post("http://localhost:8080/api/user/login", {username: this.state.userName, password: this.state.password}).then(function (response) {console.log("saved successfully")});
+  deleteToken(){
+      localStorage.setItem("token" , JSON.stringify({"token":""}));
+  }
+  tryToLogIn(event){
+      var usernameToStore = this.state.userName;
+    this.server.post("http://localhost:8080/api/user/login", {
+        username: this.state.userName,
+        password: this.state.password
+    }).then(function (response) {
+            alert("success");
+            localStorage.setItem("token", JSON.stringify(response.data));
+            console.log(JSON.parse(localStorage.getItem("token")).token);
+            sessionStorage.setItem("currentUser", JSON.stringify({"key" : usernameToStore}));
+            console.log(sessionStorage.getItem("coco"));
+            browserHistory.push('/account');
+    }).catch(function (error) {
+        alert("Password or username incorrect");
+        sessionStorage.setItem("answer", JSON.stringify(error.status))
+    });
+  }
+  newFunc(event){
+      this.server.get("http://localhost:8080/api/user/xyz/", {
+          headers: {'X-AUTH' : JSON.parse(localStorage.getItem("token")).token}
+      }).then(function (response) {
+          console.log(response.data);
+          console.log(response.state);
+      }).catch(function (error) {
+            alert("token nie wazny");
+      })
   }
   userNameChange(event){
-    this.setState({userName: event.target.value})//tu se pisze
-  }
+    this.setState({userName: event.target.value})
+  };
   passwordChange(event){
     this.setState({password: event.target.value})
   }
@@ -28,7 +58,8 @@ export default class LoginElement extends React.Component {
       <div>
         <center><input type="text" placeholder="username" onChange={this.userNameChange}/></center>
         <center><input type="password" placeholder="password" onChange={this.passwordChange}/></center>
-        <center><button onClick={this.sendData}>Submit</button><button>Clear</button></center>
+        <center><button onClick={this.tryToLogIn}>Submit</button><button onClick={this.newFunc}>Tu!</button></center>
+          <button onClick={this.deleteToken}>dupa</button>
       </div>
     );
   }
