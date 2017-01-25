@@ -1,13 +1,13 @@
 {
-  "name": "okudos-web",
-  "version": "1.0.0",
+  "name": "save_you_pass_web_client",
+  "version": "0.0.1",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "web-app": "./node_modules/.bin/webpack-dev-server --port 8081 --hot --inline"
   },
-  "author": "Okudos Team",
+  "author": "Tomasz Sułecki & Adam Piekarczyk",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.18.2",
@@ -21,6 +21,7 @@
     "axios": "^0.15.2",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
-    "react-password-field": "0.0.2"
+    "react-password-field": "0.0.2",
+    "node-forge": "^0.6.48"
   }
 }
