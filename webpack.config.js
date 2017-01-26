@@ -8,6 +8,13 @@ module.exports = {
     },
     
     module: {
+        rules: [
+            {
+                test: /\.json$/,
+                use: 'json-loader'
+            }
+        ],
+
         loaders: [
             {
                 test: /\.js$/,
@@ -16,6 +23,10 @@ module.exports = {
                 query: {
                     presets: ['es2015', 'react']
                 }
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
             }
         ]
     },

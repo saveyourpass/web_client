@@ -1,7 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router'
 import CrypticoElement from './CrypticoElement'
-
+import KeyManagement from './KeyManagement.js'
+import RestoreKey from './RestoreKey.js'
 
 class MyAccount extends React.Component{
     constructor(){
@@ -22,8 +23,10 @@ class MyAccount extends React.Component{
             return (
                 <div>
                     <center><h1>Welcome {JSON.parse(sessionStorage.getItem("currentUser")).key} !</h1></center>
-                    <center><h>bla bla bla, ehhe</h></center>
+                    <center><h>Send us 100$!</h></center>
                     <center><CrypticoElement/></center>
+                    <center><RestoreKey/></center>
+                    <center><KeyManagement/></center>
                 </div>
             )
         }

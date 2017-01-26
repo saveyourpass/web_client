@@ -26,7 +26,6 @@ export default class LoginElement extends React.Component {
         username: this.state.userName,
         password: this.state.password
     }).then(function (response) {
-            alert("success");
             localStorage.setItem("token", JSON.stringify(response.data));
             console.log(JSON.parse(localStorage.getItem("token")).token);
             sessionStorage.setItem("currentUser", JSON.stringify({"key" : usernameToStore}));
@@ -58,8 +57,7 @@ export default class LoginElement extends React.Component {
       <div>
         <center><input type="text" placeholder="username" onChange={this.userNameChange}/></center>
         <center><input type="password" placeholder="password" onChange={this.passwordChange}/></center>
-        <center><button onClick={this.tryToLogIn}>Submit</button><button onClick={this.newFunc}>Tu!</button></center>
-          <button onClick={this.deleteToken}>dupa</button>
+        <center><button onClick={this.tryToLogIn}>Submit</button><button onClick={this.newFunc}>Testowy!</button></center>
       </div>
     );
   }

@@ -4,6 +4,7 @@ import LoginElement from './LoginElement'
 export default class MainView extends React.Component {
   constructor(props) {
     super(props);
+
   }
 
   render() {
