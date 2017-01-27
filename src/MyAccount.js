@@ -24,9 +24,9 @@ class MyAccount extends React.Component{
                 <div>
                     <center><h1>Welcome {JSON.parse(sessionStorage.getItem("currentUser")).key} !</h1></center>
                     <center><h>Send us 100$!</h></center>
-                    <center><CrypticoElement/></center>
-                    <center><RestoreKey/></center>
                     <center><KeyManagement/></center>
+                    <center><RestoreKey/></center>
+                    <center><CrypticoElement/></center>
                 </div>
             )
         }

@@ -18,8 +18,8 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                exclude:'node_modules/',
-                loader: 'babel',
+                exclude: /(node_modules|bower_components|forge\.bundle\.js)/,
+                loader: 'babel-loader',
                 query: {
                     presets: ['es2015', 'react']
                 }
