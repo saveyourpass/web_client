@@ -23,7 +23,7 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-password-field": "0.0.2",
-    "node-forge": "^0.6.48",
+    "node-forge": "digitalbazaar/forge",
     "node-rsa": "^0.4.2"
   }
 }
