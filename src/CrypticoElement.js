@@ -38,45 +38,27 @@ class CrypticoElement extends React.Component {
         if(this.state.password === this.state.passwordConfirm){
             var forge = require('node-forge');
             var rsa = forge.pki.rsa;
+            var pki = forge.pki;
 
             var keypair = rsa.generateKeyPair({bits: this.state.keyLength});
             var publicKeyInPemFormat = forge.pki.publicKeyToPem(keypair.publicKey);
-            var privateKeyInPemFormat = forge.pki.privateKeyToPem(keypair.privateKey);
             var pubFingerPrint = forge.ssh.getPublicKeyFingerprint(keypair.publicKey, {encoding: 'hex', delimiter: ':'});
 
-            //console.log(forge.pki.encryptRsaPrivateKey(keypair.privateKey, 'password'));
+            var encryptedPrivateKey = pki.encryptRsaPrivateKey(keypair.privateKey, this.state.password, {legacy: false, algorithm: '3des'});
 
             var date = new Date().toLocaleDateString();
             var hour = new Date().toLocaleTimeString();
-
-            var keySize = 16;
-            var salt = 12345678;
-
-            var key = forge.pkcs5.pbkdf2(this.state.password , salt, 1000, keySize);
-
-            var iv = '1234567887654321';
-            var input = forge.util.createBuffer(privateKeyInPemFormat, 'utf8');
-
-            var cipher = forge.cipher.createCipher('AES-CBC', key);
-            cipher.start({iv: iv});
-            cipher.update(input);
-            cipher.finish();
-            console.log(cipher.output.toHex());
-
-            var cipherPrivateKey = cipher.output.toHex();
-
 
             var object = {
                 "date":date,
                 "hour":hour,
                 "pubKey":JSON.stringify(publicKeyInPemFormat),
-                "privKey":JSON.stringify(cipherPrivateKey),
+                "privKey":JSON.stringify(encryptedPrivateKey),
                 "fingerPrint":JSON.stringify(pubFingerPrint)
             };
             localStorage.setItem("CurrentPrivateKey", JSON.stringify(object));
+            location.reload();
 
-            console.log(publicKeyInPemFormat);
-            console.log(privateKeyInPemFormat);
         }else{
             alert("Passwords are different.")
         }

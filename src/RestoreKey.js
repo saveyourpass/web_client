@@ -44,42 +44,17 @@ class RestoreKey extends React.Component{
     }
 
     restore() {
-        //try{
-            var forge = require('node-forge');
-            var rsa = forge.pki.rsa;
-            var encryptedPrivKey = this.state.keyString;
-            var keySize = 16;
-            var salt = 12345678;
-            var key = forge.pkcs5.pbkdf2(this.state.password , salt, 1000, keySize);
-            var iv = '1234567887654321';
+        var forge = require('node-forge');
+        var rsa = forge.pki.rsa;
+        var pki = forge.pki;
+        var encryptedPrivKey = this.state.keyString;
 
-            var ciphertextHex = forge.util.createBuffer()
-            var ciphertext = forge.util.hexToBytes(encryptedPrivKey);
-            var input = forge.util.createBuffer(ciphertext);
-            var decipher = forge.cipher.createDecipher('AES-CBC', key);
-            decipher.start({iv: iv});
-            decipher.update(input);
-            decipher.finish();
-            console.log(decipher.output.toString('utf8'));
-
-
-            // alert("Success");
-            // console.log(key.exportKey('pkcs8'));
-            // var pub_key = key.exportKey('pkcs8-public');
-            // var priv_key = key.exportKey('pkcs8');
-            // var data = new Date().toLocaleDateString();
-            // var godzina = new Date().toLocaleTimeString();
-            // var ob = {
-            //     "date":data,
-            //     "hour":godzina,
-            //     "pubKey":JSON.stringify(pub_key),
-            //     "privKey":JSON.stringify(priv_key),
-            // };
-            // localStorage.setItem("CurrentPrivateKey", JSON.stringify(ob));
-            // location.reload();
-        // }catch (e){
-        //     alert("Private key uncorrect");
-        // }
+        try{
+            var privateKey  = pki.decryptRsaPrivateKey(encryptedPrivKey, this.state.password);
+        }catch (e){
+            alert("Text file or given password is incorrect.");
+        }
+        console.log(forge.pki.privateKeyToPem(privateKey));
     }
 
     keyInput(event){
