@@ -57,7 +57,9 @@ export default class LoginElement extends React.Component {
       <div>
         <center><input type="text" placeholder="username" onChange={this.userNameChange}/></center>
         <center><input type="password" placeholder="password" onChange={this.passwordChange}/></center>
-        <center><button onClick={this.tryToLogIn}>Submit</button><button onClick={this.newFunc}>Testowy!</button></center>
+        <center><button onClick={this.tryToLogIn}>Submit</button></center>
+          <h1/>
+          <center><Link to="/register">Register</Link></center>
       </div>
     );
   }

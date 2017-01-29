@@ -1,7 +1,5 @@
 import React from 'react'
-/*
-Element generating
-*/
+
 
 
 class CrypticoElement extends React.Component {
@@ -11,17 +9,22 @@ class CrypticoElement extends React.Component {
         this.generateKeys = this.generateKeys.bind(this);
         this.changeLength = this.changeLength.bind(this);
         this.validateChange = this.validateChange.bind(this);
+        this.setDeviceName = this.setDeviceName.bind(this);
         this.key = null;
         this.pubKey = null;
         this.state = {
             password : null,
             passwordConfirm : null,
             keyLength : 512,
-            validate : ""
+            validate : "",
+            deviceName : ""
         }
     }
     setPassword(event){
         this.setState({password: event.target.value})
+    }
+    setDeviceName(event){
+        this.setState({deviceName: event.target.value})
     }
     changeLength(event){
         this.setState({keyLength: event.target.value})
@@ -54,11 +57,12 @@ class CrypticoElement extends React.Component {
                 "hour":hour,
                 "pubKey":JSON.stringify(publicKeyInPemFormat),
                 "privKey":JSON.stringify(encryptedPrivateKey),
-                "fingerPrint":JSON.stringify(pubFingerPrint)
+                "fingerPrint":JSON.stringify(pubFingerPrint),
+                "deviceName": this.state.deviceName
             };
             localStorage.setItem("CurrentPrivateKey", JSON.stringify(object));
+            alert("Succes, key generated");
             location.reload();
-
         }else{
             alert("Passwords are different.")
         }
@@ -75,6 +79,8 @@ class CrypticoElement extends React.Component {
                     <option value="3072">3072</option>
                     <option value="4096">4096</option>
                 </select>
+                <center><h1></h1></center>
+                <h>Name of this device<input type="text" onChange={this.setDeviceName}/></h>
                 <center><h1></h1></center>
                 <center><h>Type password to RSA key</h><input type="password" onChange={this.setPassword}/></center>
                 <h1></h1>
