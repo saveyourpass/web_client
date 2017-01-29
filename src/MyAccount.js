@@ -5,6 +5,7 @@ import KeyManagement from './KeyManagement.js'
 import RestoreKey from './RestoreKey.js'
 import MyPasswords from './MyPasswords'
 import SharePassword from './SharePassword'
+import AddNewPassword from './AddNewPassword'
 
 class MyAccount extends React.Component{
     constructor(){
@@ -30,6 +31,7 @@ class MyAccount extends React.Component{
                     <center><RestoreKey/></center>
                     <center><CrypticoElement/></center>
                     <center><MyPasswords/></center>
+                    <center><AddNewPassword/></center>
                     <center><SharePassword/></center>
                 </div>
             )

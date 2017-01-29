@@ -68,16 +68,18 @@ class CrypticoElement extends React.Component {
             var config = {
                 headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
             };
-            this.server.post("http://localhost:8080/api/user/"+{username}+"/keys/new", {
+            console.log(username);
+            var path = "http://localhost:8080/api/user/"+username+"/keys/new";
+            console.log(path);
+            this.server.post("http://localhost:8080/api/user/"+username+"/keys/new", {
                 name: this.state.deviceName,
                 data: publicKeyInPemFormat},
                 config
             ).then(function (response) {
-                alert("Key added");
+                alert("Succes, key sent");
             }).catch(function (error) {
                 alert("Error");
             });
-
             location.reload();
         }else{
             alert("Passwords are different.")

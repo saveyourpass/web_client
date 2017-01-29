@@ -1,0 +1,24 @@
+var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
+        var config = {
+            headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
+        };
+        this.server.get("http://localhost:8080/api/user/"+username+"/keys",
+            config
+        ).then(function (response) {
+            var keys = response.data;
+            console.log(keys);
+            for( let pub in keys){//kazdy klucz zostanie wyjety, nastepnie kodowanie i odeslanie
+                console.log(keys[pub].data);
+                console.log(JSON.parse((JSON.parse(localStorage.getItem("CurrentPrivateKey"))).pubKey));
+                var forge = require('node-forge');
+                var rsa = forge.pki.rsa;
+                var pki = forge.pki;
+
+                var publicKey = pki.publicKeyFromPem(keys[pub].data);
+                var en =  publicKey.encrypt("tekst zaszyfrowany");
+                if(keys[pub].data === JSON.parse((JSON.parse(localStorage.getItem("CurrentPrivateKey"))).pubKey)){
+                    var privateKey  = pki.decryptRsaPrivateKey(JSON.parse((JSON.parse(localStorage.getItem("CurrentPrivateKey"))).privKey), "haslo");
+                    console.log(privateKey.decrypt(en));
+                }
+            }
+        });
