@@ -1,4 +1,5 @@
 import React from 'react'
+import * as axios from "axios";
 
 
 
@@ -10,6 +11,7 @@ class CrypticoElement extends React.Component {
         this.changeLength = this.changeLength.bind(this);
         this.validateChange = this.validateChange.bind(this);
         this.setDeviceName = this.setDeviceName.bind(this);
+        this.server = axios.create({baseURL: "http://localhost:8080/"});
         this.key = null;
         this.pubKey = null;
         this.state = {
@@ -39,6 +41,7 @@ class CrypticoElement extends React.Component {
     }
     generateKeys(){
         if(this.state.password === this.state.passwordConfirm){
+            var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
             var forge = require('node-forge');
             var rsa = forge.pki.rsa;
             var pki = forge.pki;
@@ -62,6 +65,19 @@ class CrypticoElement extends React.Component {
             };
             localStorage.setItem("CurrentPrivateKey", JSON.stringify(object));
             alert("Succes, key generated");
+            var config = {
+                headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
+            };
+            this.server.post("http://localhost:8080/api/user/"+{username}+"/keys/new", {
+                name: this.state.deviceName,
+                data: publicKeyInPemFormat},
+                config
+            ).then(function (response) {
+                alert("Key added");
+            }).catch(function (error) {
+                alert("Error");
+            });
+
             location.reload();
         }else{
             alert("Passwords are different.")
