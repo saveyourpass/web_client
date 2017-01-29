@@ -3,6 +3,8 @@ import {Link} from 'react-router'
 import CrypticoElement from './CrypticoElement'
 import KeyManagement from './KeyManagement.js'
 import RestoreKey from './RestoreKey.js'
+import MyPasswords from './MyPasswords'
+import SharePassword from './SharePassword'
 
 class MyAccount extends React.Component{
     constructor(){
@@ -27,6 +29,8 @@ class MyAccount extends React.Component{
                     <center><KeyManagement/></center>
                     <center><RestoreKey/></center>
                     <center><CrypticoElement/></center>
+                    <center><MyPasswords/></center>
+                    <center><SharePassword/></center>
                 </div>
             )
         }

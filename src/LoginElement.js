@@ -27,7 +27,7 @@ export default class LoginElement extends React.Component {
         password: this.state.password
     }).then(function (response) {
             sessionStorage.setItem("token", JSON.stringify(response.data));
-            console.log(JSON.parse(localStorage.getItem("token")).token);
+            console.log(JSON.parse(sessionStorage.getItem("token")).token);
             sessionStorage.setItem("currentUser", JSON.stringify({"key" : usernameToStore}));
             console.log(sessionStorage.getItem("coco"));
             browserHistory.push('/account');
@@ -38,7 +38,7 @@ export default class LoginElement extends React.Component {
   }
   newFunc(event){
       this.server.get("http://localhost:8080/api/user/xyz/", {
-          headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
+          headers: {'X-AUTH' : JSON.parse(localStorage.getItem("token")).token}
       }).then(function (response) {
           console.log(response.data);
           console.log(response.state);

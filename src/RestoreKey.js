@@ -55,6 +55,23 @@ class RestoreKey extends React.Component{
             alert("Text file or given password is incorrect.");
         }
         console.log(forge.pki.privateKeyToPem(privateKey));
+
+        var publicKey = forge.pki.rsa.setPublicKey(privateKey.n, privateKey.e);
+        var publicKeyInPemFormat = forge.pki.publicKeyToPem(publicKey);
+        var pubFingerPrint = forge.ssh.getPublicKeyFingerprint(publicKey, {encoding: 'hex', delimiter: ':'});
+
+        var date = new Date().toLocaleDateString();
+        var hour = new Date().toLocaleTimeString();
+
+        var object = {
+            "date":date,
+            "hour":hour,
+            "pubKey":JSON.stringify(publicKeyInPemFormat),
+            "privKey":JSON.stringify(encryptedPrivKey),
+            "fingerPrint":JSON.stringify(pubFingerPrint)
+        };
+        localStorage.setItem("CurrentPrivateKey", JSON.stringify(object));
+        location.reload();
     }
 
     keyInput(event){
