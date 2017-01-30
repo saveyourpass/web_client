@@ -29,7 +29,6 @@ export default class LoginElement extends React.Component {
             sessionStorage.setItem("token", JSON.stringify(response.data));
             console.log(JSON.parse(sessionStorage.getItem("token")).token);
             sessionStorage.setItem("currentUser", JSON.stringify({"key" : usernameToStore}));
-            console.log(sessionStorage.getItem("coco"));
             browserHistory.push('/account');
     }).catch(function (error) {
         alert("Password or username incorrect");

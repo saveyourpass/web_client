@@ -47,9 +47,9 @@ class MyPasswords extends React.Component{
             <div>
                 <center><h1>My passwords</h1></center>
                 <center><h>Choose password to decrypt: </h><select>{rowsGiver}</select></center>
-                <p><center>Type password to RSA key: <input type="password"/></center></p>
+                <center>Type password to RSA key: <input type="password"/></center>
                 <center><button>Decrypt</button></center>
-                <p><center>Decrypted Password: </center></p>
+                <center>Decrypted Password: </center>
                 <center><textarea type="text" value={this.state.decryptedPassword}/></center>
                 <center><button onClick={this.func}>OK</button></center>
             </div>

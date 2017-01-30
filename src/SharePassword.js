@@ -30,7 +30,7 @@ class SharePassword extends React.Component{
             <div>
                 <center><h1>Share Password</h1></center>
                 <center><h>Choose password to share: </h><select>{rowsGiver}</select></center>
-                <p><center>Type password to RSA key: <input type="password"/></center></p>
+                <center>Type password to RSA key: <input type="password"/></center>
                 <center><button>Decrypt</button></center>
             </div>
         )
