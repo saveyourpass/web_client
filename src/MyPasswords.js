@@ -50,7 +50,7 @@ class MyPasswords extends React.Component{
                 <center>Type password to RSA key: <input type="password"/></center>
                 <center><button>Decrypt</button></center>
                 <center>Decrypted Password: </center>
-                <center><textarea type="text" value={this.state.decryptedPassword}/></center>
+                {/*<center><textarea type="text" value={this.state.decryptedPassword}/></center>*/}
                 <center><button onClick={this.func}>OK</button></center>
             </div>
         )
