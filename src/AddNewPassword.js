@@ -65,8 +65,9 @@ class AddNewPassword extends React.Component{
 
             var publicKey = pki.publicKeyFromPem(this.state.users[pub].data);
             var encryptedData =  publicKey.encrypt(this.state.password);
+            var costam = forge.util.encode64(encryptedData);
             this.server.post("http://localhost:8080/api/user/"+username+"/passwords/"+this.state.passwordName+"/uploadEncrypted?shareWith="+username+"&keyname="+this.state.users[pub].name, {
-                    data: encryptedData},
+                    data: costam},
                 config
             )
         }

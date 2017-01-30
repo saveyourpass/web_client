@@ -2,19 +2,34 @@
  * Created by tomek on 28/01/17.
  */
 import React from 'react'
+import * as axios from "axios";
 
 class MyPasswords extends React.Component{
     constructor(){
         super();
+        this.func = this.func.bind(this);
+        this.server = axios.create({baseURL: "http://localhost:8080/"});
         this.state = {
             passwords: [],
-            decryptedPassword: "ehehehe"
+            decryptedPassword: "ehehehe",
+            passwords: []
         }
     }
-
+    func(){
+        console.log(this.state.passwords);
+        //response => this.setState({passwords: response.data})
+    }
     componentDidMount(){
-        this.setState({
-            passwords: [{"key": "tomek1", "value":"mistrz1"}, {"key": "tomek2", "value":"mistrz2"}, {"key": "tomek3", "value":"mistrz3"}]
+        var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
+        var keyname = JSON.parse(localStorage.getItem("CurrentPrivateKey")).deviceName;
+        //console.log("http://localhost:8080/api/user/"+username+"/keys/"+keyname+"/passwords");
+        var config = {
+            headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
+        };
+        this.server.get("http://localhost:8080/api/user/"+username+"/keys/"+keyname+"/passwords",
+            config
+        ).then(function (response) {
+            console.log(response.data);
         })
     }
 
@@ -36,6 +51,7 @@ class MyPasswords extends React.Component{
                 <center><button>Decrypt</button></center>
                 <p><center>Decrypted Password: </center></p>
                 <center><textarea type="text" value={this.state.decryptedPassword}/></center>
+                <center><button onClick={this.func}>OK</button></center>
             </div>
         )
     }
