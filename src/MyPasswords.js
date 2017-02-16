@@ -7,17 +7,38 @@ import * as axios from "axios";
 class MyPasswords extends React.Component{
     constructor(){
         super();
-        this.func = this.func.bind(this);
+        this.decryptPassword = this.decryptPassword.bind(this);
+        this.choosePasswordToDecrypt = this.choosePasswordToDecrypt.bind(this);
+        this.setPassToRSA = this.setPassToRSA.bind(this);
         this.server = axios.create({baseURL: "http://localhost:8080/"});
         this.state = {
             passwords: [],
-            decryptedPassword: "ehehehe",
-            passwords: []
+            decryptedPassword: '',
+            passwordToDecrypt: '',
+            passwordToRSAKey: ''
         }
     }
-    func(){
-        console.log(this.state.passwords);
-        //response => this.setState({passwords: response.data})
+
+    setPassToRSA (event){
+        this.setState({passwordToRSAKey: event.target.value});
+    }
+
+    choosePasswordToDecrypt(event){
+        this.setState({passwordToDecrypt: event.target.value});
+    }
+
+    decryptPassword(){
+        var forge = require('node-forge');
+        var pki = forge.pki;
+        var util = forge.util;
+
+        var pemPrivateKey = JSON.parse(JSON.parse(localStorage.getItem("CurrentPrivateKey")).privKey);
+        var privateKey = pki.decryptRsaPrivateKey(pemPrivateKey, this.state.passwordToRSAKey);
+        var passToRsa = this.state.passwordToRSAKey;
+        var decodedFrom64PasswordFromServer = util.decode64(this.state.passwordToDecrypt);
+
+        var decryptedPassword = privateKey.decrypt(decodedFrom64PasswordFromServer);
+        console.log(decryptedPassword);
     }
     componentDidMount(){
         var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
@@ -28,30 +49,31 @@ class MyPasswords extends React.Component{
         };
         this.server.get("http://localhost:8080/api/user/"+username+"/keys/"+keyname+"/passwords",
             config
-        ).then(function (response) {
-            console.log(response.data);
-        })
+        ).then(
+            response => this.setState({passwords: response.data})
+        )
     }
 
     render(){
 
         let rowsGiver = [];
+        rowsGiver.push(<option key={"key"} value = {"value"}>...</option>)
 
         for (let prop in this.state.passwords) {
-            let car = this.state.passwords[prop];
+            let pass = this.state.passwords[prop];
             rowsGiver.push(
-                <option key={car.key} value = {car.value}>{car.key}</option> );
+                <option key={pass.password.name} value = {pass.data}>{pass.password.name}</option> );
         }
 
         return(
             <div>
                 <center><h1>My passwords</h1></center>
-                <center><h>Choose password to decrypt: </h><select>{rowsGiver}</select></center>
-                <center>Type password to RSA key: <input type="password"/></center>
-                <center><button>Decrypt</button></center>
+                <center><h>Choose password to decrypt: </h><select onChange={this.choosePasswordToDecrypt}>{rowsGiver}</select></center>
+                <center>Type password to RSA key: <input type="password" onChange={this.setPassToRSA}/></center>
+                <center><button onClick={this.decryptPassword}>Decrypt</button></center>
                 <center>Decrypted Password: </center>
-                {/*<center><textarea type="text" value={this.state.decryptedPassword}/></center>*/}
-                <center><button onClick={this.func}>OK</button></center>
+                <center><output type="text" value={this.state.decryptedPassword}/></center>
+                <center><button onClick={this.decryptPassword}>OK</button></center>
             </div>
         )
     }
