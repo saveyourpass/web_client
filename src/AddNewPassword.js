@@ -11,9 +11,9 @@ class AddNewPassword extends React.Component{
         this.server = axios.create({baseURL: "http://localhost:8080/"});
         this.state = {
             passwordName : "",
-            password : 'tomek',
-            passwordConf : '',
-            users : []
+            password : "",
+            passwordConf : "",
+            keys : []
         }
     }
     componentDidMount(){
@@ -23,62 +23,39 @@ class AddNewPassword extends React.Component{
         };
         this.server.get("http://localhost:8080/api/user/"+username+"/keys",
             config
-        ).then(response => this.setState({users: response.data}))
+        ).then(response => this.setState({keys: response.data}))
     }
-    // getUserKeys(){
-    //     var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
-    //     var config = {
-    //         headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
-    //     };
-    //     this.server.get("http://localhost:8080/api/user/"+username+"/keys",
-    //         config
-    //     ).then(function (response) {
-    //         var keys = response.data;
-    //         console.log(keys);
-    //         for( let pub in keys){//kazdy klucz zostanie wyjety, nastepnie kodowanie i odeslanie
-    //             console.log(keys[pub].data);
-    //             console.log(JSON.parse((JSON.parse(localStorage.getItem("CurrentPrivateKey"))).pubKey));
-    //             var forge = require('node-forge');
-    //             var rsa = forge.pki.rsa;
-    //             var pki = forge.pki;
-    //
-    //             var publicKey = pki.publicKeyFromPem(keys[pub].data);
-    //             var encryptedData =  publicKey.encrypt("tomek");
-    //             this.server.post("http://localhost:8080/api/user/"+username+"/"+this.state.passwordName+"/uploadEncrypted?shareWith="+username+"&keyname="+keys[pub].name, {
-    //                     data: encryptedData},
-    //                 config
-    //             )
-    //         }
-    //     });
-    // }
+
     share(){
+
         var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
-        var config = {
-                    headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
-                };
-        for( let pub in this.state.users){//kazdy klucz zostanie wyjety, nastepnie kodowanie i odeslanie
-            console.log(this.state.users[pub].data);
-            console.log(JSON.parse((JSON.parse(localStorage.getItem("CurrentPrivateKey"))).pubKey));
+        var config = {headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}};
+
+        for( let index in this.state.keys){
+
             var forge = require('node-forge');
-            var rsa = forge.pki.rsa;
             var pki = forge.pki;
 
-            var publicKey = pki.publicKeyFromPem(this.state.users[pub].data);
+            var publicKey = pki.publicKeyFromPem(this.state.keys[index].data);
             var encryptedData =  publicKey.encrypt(this.state.password);
-            var costam = forge.util.encode64(encryptedData);
-            this.server.post("http://localhost:8080/api/user/"+username+"/passwords/"+this.state.passwordName+"/uploadEncrypted?shareWith="+username+"&keyname="+this.state.users[pub].name, {
-                    data: costam},
-                config
+            var encoded64encryptedData = forge.util.encode64(encryptedData);
+
+            this.server.post("http://localhost:8080/api/user/"+username+"/passwords/"+this.state.passwordName+"/uploadEncrypted?shareWith="+username+"&keyname="+this.state.keys[index].name, {
+                    data: encoded64encryptedData}, config
             )
         }
     }
+
     changeName(event){
         this.setState({passwordName: event.target.value});
     }
+
     changePass(event){
         this.setState({password: event.target.value});
     }
+
     sendNewPassword(){
+
         var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
         var config = {
             headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}

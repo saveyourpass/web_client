@@ -33,14 +33,16 @@ class CrypticoElement extends React.Component {
     }
     validateChange(event){
         if(this.state.password === event.target.value){
-            this.setState({validate: "Same publicKeys"});
+            this.setState({validate: "Same passwords"});
         }else{
-            this.setState({validate: "Different publicKeys"});
+            this.setState({validate: "Different passwords"});
         }
         this.setState({passwordConfirm: event.target.value})
     }
     generateKeys(){
+
         if(this.state.password === this.state.passwordConfirm){
+
             var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
             var forge = require('node-forge');
             var rsa = forge.pki.rsa;
@@ -63,14 +65,15 @@ class CrypticoElement extends React.Component {
                 "fingerPrint":JSON.stringify(pubFingerPrint),
                 "deviceName": this.state.deviceName
             };
+
             localStorage.setItem("CurrentPrivateKey", JSON.stringify(object));
+
             alert("Succes, key generated");
+
             var config = {
                 headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
             };
-            console.log(username);
-            var path = "http://localhost:8080/api/user/"+username+"/keys/new";
-            console.log(path);
+
             this.server.post("http://localhost:8080/api/user/"+username+"/keys/new", {
                 name: this.state.deviceName,
                 data: publicKeyInPemFormat},
@@ -80,7 +83,9 @@ class CrypticoElement extends React.Component {
             }).catch(function (error) {
                 alert("Error");
             });
+
             location.reload();
+
         }else{
             alert("Passwords are different.")
         }
