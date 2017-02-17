@@ -36,9 +36,9 @@ class RestoreKey extends React.Component{
 
     validateChange(event){
         if(this.state.password === event.target.value){
-            this.setState({validate: "Same passwords"});
+            this.setState({validate: "Same publicKeys"});
         }else{
-            this.setState({validate: "Different passwords"});
+            this.setState({validate: "Different publicKeys"});
         }
         this.setState({passwordConfirm: event.target.value})
     }

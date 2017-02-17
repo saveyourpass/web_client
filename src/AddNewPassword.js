@@ -25,7 +25,7 @@ class AddNewPassword extends React.Component{
             config
         ).then(response => this.setState({users: response.data}))
     }
-    // share(){
+    // getUserKeys(){
     //     var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
     //     var config = {
     //         headers: {'X-AUTH' : JSON.parse(sessionStorage.getItem("token")).token}
