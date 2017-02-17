@@ -37,8 +37,9 @@ class MyPasswords extends React.Component{
         var passToRsa = this.state.passwordToRSAKey;
         var decodedFrom64PasswordFromServer = util.decode64(this.state.passwordToDecrypt);
 
-        var decryptedPassword = privateKey.decrypt(decodedFrom64PasswordFromServer);
-        console.log(decryptedPassword);
+        var decryptedPass = privateKey.decrypt(decodedFrom64PasswordFromServer);
+        console.log(decryptedPass);
+        this.setState({decryptedPassword: decryptedPass});
     }
     componentDidMount(){
         var username = JSON.parse(sessionStorage.getItem("currentUser")).key;
@@ -71,8 +72,7 @@ class MyPasswords extends React.Component{
                 <center><h>Choose password to decrypt: </h><select onChange={this.choosePasswordToDecrypt}>{rowsGiver}</select></center>
                 <center>Type password to RSA key: <input type="password" onChange={this.setPassToRSA}/></center>
                 <center><button onClick={this.decryptPassword}>Decrypt</button></center>
-                <center>Decrypted Password: </center>
-                <center><output type="text" value={this.state.decryptedPassword}/></center>
+                <center>Decrypted Password: {this.state.decryptedPassword}</center>
                 <center><button onClick={this.decryptPassword}>OK</button></center>
             </div>
         )
